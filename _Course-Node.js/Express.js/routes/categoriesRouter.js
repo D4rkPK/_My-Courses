@@ -38,18 +38,19 @@ router.post("/categories", (req, res) => {
 router.patch("/categories/:id", (req, res) => {
   const { id } = req.params;
   const body = req.body;
+  const categories = service.update(id, body);
   res.status(200).json({
     message: "Category updated",
-    data: body,
-    id,
+    data: categories,
   });
 });
 
 router.delete("/categories/:id", (req, res) => {
   const { id } = req.params;
+  const categories = service.delete(id);
   res.status(200).json({
     message: "Category deleted",
-    id,
+    data: categories,
   });
 });
 
