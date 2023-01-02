@@ -10,24 +10,20 @@ router.get("/categories/:categoryId/products/:productId", (req, res) => {
   });
 });
 
-router.get("/categories", (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: "Category 1",
-    },
-    {
-      id: 2,
-      name: "Category 2",
-    },
-  ]);
+router.get("/", (req, res) => {
+  const categories = service.find();
+  res.status(200).json({
+    message: "Categories listed",
+    data: categories,
+  });
 });
 
 router.get("/categories/:id", (req, res) => {
   const { id } = req.params;
-  res.json({
-    id,
-    name: "Category 1",
+  const category = service.findOne(id);
+  res.status(200).json({
+    message: "Category retrieved",
+    data: category,
   });
 });
 
