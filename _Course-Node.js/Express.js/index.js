@@ -1,4 +1,5 @@
 const express = require("express");
+const faker = require("faker");
 const app = express();
 const port = 3000;
 
@@ -19,54 +20,71 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/products", (req, res) => {
+  const products = [];
+  const { size } = req.query;
+  const limit = size || 10;
+  for (let i = 0; i < limit; i++) {
+    products.push({
+      name: faker.commerce.productName(),
+      price: parseFloat(faker.commerce.price(), 10),
+      image: faker.image.image(),
+    });
+  }
+  res.json(products);
+});
+
+app.get("/products/filter", (req, res) => {
+    res.send("Filter");
+})
+
+app.get("/products/:id", (req, res) => {
+    const { id } = req.params;
+    res.json({
+      id,
+      name: "Product 2",
+      price: 1000,
+    });
+  });
+
+app.get("/categories/:categoryId/products/:productId", (req, res) => {
+  const { categoryId, productId } = req.params;
+  res.json({
+    categoryId,
+    productId,
+  });
+});
+
+app.get("/categories", (req, res) => {
   res.json([
     {
-      name: "Product 1",
-      price: 100,
+      id: 1,
+      name: "Category 1",
     },
     {
-      name: "Product 2",
-      price: 200,
+      id: 2,
+      name: "Category 2",
     },
   ]);
 });
 
-app.get("/products/:id", (req, res) => {
+app.get("/categories/:id", (req, res) => {
   const { id } = req.params;
   res.json({
     id,
-    name: "Product 2",
-    price: 1000,
+    name: "Category 1",
   });
 });
 
-app.get("/categories/:categoryId/products/:productId", (req, res) => {
-    const { categoryId, productId } = req.params;
+app.get("/users", (req, res) => {
+  const { limit, offset } = req.query;
+  if (limit && offset) {
     res.json({
-        categoryId,
-        productId,
+      limit,
+      offset,
     });
-})
-
-app.get("/categories", (req, res) => {
-    res.json([
-        {
-            id: 1,
-            name: "Category 1",
-        },
-        {
-            id: 2,
-            name: "Category 2",
-        },
-    ]);
-});
-
-app.get("/categories/:id", (req, res) => {
-    const { id } = req.params;
-    res.json({
-        id,
-        name: "Category 1",
-    });
+  } else {
+    res.send("No limit and offset");
+  }
 });
 
 app.listen(port, () => {
