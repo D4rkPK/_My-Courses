@@ -30,4 +30,12 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.post("/", (req, res) => {
+  const body = req.body;
+  res.status(201).json({
+    message: "Product created",
+    data: body,
+  });
+});
+
 module.exports = router;

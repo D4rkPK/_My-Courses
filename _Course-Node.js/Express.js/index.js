@@ -3,7 +3,8 @@ const routerAPi = require("./routes");
 
 const app = express();
 const port = 3000;
-const env = "/api/v1";
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -21,7 +22,7 @@ app.get("/about", (req, res) => {
   res.send("About Page");
 });
 
-routerAPi(app, env);
+routerAPi(app);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
